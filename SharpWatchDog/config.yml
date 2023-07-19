@@ -1,0 +1,79 @@
+﻿---
+dingdingtoken: a03b5c1d3670fb7f1f06f6b3f450a8b6d4b3c2b614e4427ae29f39fee40036ac
+
+process:
+ -  rulename: 监控红队常用命令
+    ProcessName_in:
+      - whoami
+      - net
+      - net1
+      - adfind
+      - dsquery
+      - cmd
+      - netstat
+      - systeminfo
+      - tasklist
+      - ipconfig
+      - sc
+      - quser
+      - query
+      - schtasks
+      - runas
+      - netsh
+      - logman
+      - certutil
+      - cmdkey
+      - certipy 
+
+ -  rulename: 监控常用黑客工具进程名
+    ProcessName_in:
+      - mimikatz
+      - fscan    
+
+ -  rulename: 监控所有进程
+    ProcessName_ne: ""
+
+ -  rulename: 敏感参数监控
+    CommandLine_like:
+      - privilege::debug
+      - ntlmrelayx.py
+      - secretsdump.py
+      - wmipersist.py
+      - dcomexec.py
+      - psexec.py
+      - smbexec.py
+      - mimikatz.py
+      - addcomputer.py
+
+network:
+ -  rulename: 监控445等横向端口
+    dport_in:
+      - 445
+      - 135
+      - 3389
+      - 22
+      - 1433
+      - 3306
+      - 5985
+
+ -  rulename: 监控访问频率(10s)
+    rate_gt: 60
+      
+file:
+ -  rulename: 监控exe/dll落地
+    FileName_like:
+      - "*.exe"
+      - "*.dll"
+      - "*.jsp"
+      - "*.php"
+      - "*.asp"
+      - "*.aspx"
+    
+ -  rulename: 监控常用目录
+    FileName_like:
+      - c:\users\public\*
+      - c:\programdata\*
+        
+logon:
+ -  rulename: 监控登录日志
+    TargetUserName_ne: system
